@@ -6,12 +6,46 @@ class Program
     static nint window;
     static nint renderer;
     static nint texture;
+    static Chip8.Chip8 cpu;
 
     static void Main(string[] args)
     {
         try
         {
             Init();
+
+            cpu = new Chip8.Chip8();
+            cpu.Init();
+
+            //TODO: Load ROM
+
+
+            bool keepRunning = true;
+            while(keepRunning)
+            {
+                //TODO: Emulator cycle
+                SDL.SDL_Event ev;
+                while (SDL.SDL_PollEvent(out ev) != 0)
+                {
+                    if (ev.type == SDL.SDL_EventType.SDL_QUIT)
+                    {
+                        keepRunning = false;
+                    }
+                }
+
+                // render the screen
+                _ = SDL.SDL_RenderClear(renderer);
+
+                //TODO: Build the texture
+
+                _ = SDL.SDL_RenderCopy(renderer, texture, IntPtr.Zero, IntPtr.Zero);
+                SDL.SDL_RenderPresent(renderer);
+
+                // 16 Hz running
+                Thread.Sleep(16);
+                
+            }
+
         }
         finally
         {
